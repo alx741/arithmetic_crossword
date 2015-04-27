@@ -62,11 +62,8 @@ void gen_operations(char op_t, int op_n)
         }
 
         // Add new OPERATION to POOL
-        cout << "OP_T: " << int(op_t_select) << endl;
         operation_t* operation = new operation_t(op_t_select);
         pool.push_back(*operation);
         delete operation;
     }
-
-    return 0;
 }
