@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstdlib>
 #include "operations.hpp"
 
@@ -39,6 +38,7 @@ operation_t::operation_t(char op_t)
 
 void gen_operations(char op_t, int op_n)
 {
+    srand(time(NULL));
     char op_t_select = 0;
 
     for(int i=0; i<op_n; i++)
