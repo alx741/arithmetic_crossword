@@ -3,9 +3,21 @@
 
 using namespace std;
 
-// Operation Pools
+
+/* Operation Pools */
 op_pool pool;
 op_seq_pool seq_pool;
+
+
+/*
+ * Helper fucntions
+ */
+
+/* Returns the first digit of N */
+int fd(int n);
+
+/* Returns the last digit of N */
+int ld(int n);
 
 
 operation_t::operation_t(char op_t)
@@ -34,6 +46,7 @@ operation_t::operation_t(char op_t)
                   break;
     }
 }
+
 
 
 void gen_operations(char op_t, int op_n)
@@ -66,4 +79,21 @@ void gen_operations(char op_t, int op_n)
         pool.push_back(*operation);
         delete operation;
     }
+}
+
+
+
+/* Returns the first digit of N */
+int fd(int n)
+{
+    while( n >= 10){ n /= 10; }
+    return n;
+}
+
+
+
+/* Returns the last digit of N */
+int ld(int n)
+{
+    return n % 10;
 }
