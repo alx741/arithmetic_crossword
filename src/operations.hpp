@@ -28,14 +28,11 @@ struct operation_t
     int op2;
     int result;
     char op_t;
+    bool crossed;
 
     operation_t(char op_t);
 };
 
-/*
- * OPERATION elements pool
- */
-typedef std::vector<operation_t> op_pool;
 
 /*
  * OPERATION Elements that intersect with each other left to right
@@ -44,20 +41,20 @@ typedef std::vector<operation_t> op_pool;
  */
 typedef std::vector<operation_t> op_seq;
 
+
 /*
  * OPERATION SEQUENCE elements pool
  */
 typedef std::vector<op_seq> op_seq_pool;
 
-/*
- * Operation pools
- */
-extern op_pool pool;
-extern op_seq_pool seq_pool;
 
 /*
- * Fill OP_POOL with OP_N operations of type OP_T
+ * Fill SEQ_POOL with OP_N operation of type OP_T and up to
+ * CROSS_N intersections
+ *
+ * Returns the number of sequences generated
  */
-void gen_operations(char op_t, int op_n);
+int get_operations(op_seq_pool& seq_pool, char op_t, int op_n, int cross_n);
+
 
 #endif // _OPERATIONS_HPP_
