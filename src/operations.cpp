@@ -29,29 +29,34 @@ int cross(int n, int m);
 
 operation_t::operation_t(char op_t)
 {
-    this -> op1 = rand() % 99 + 1;
-    this -> op2 = rand() % 99 + 1;
     this -> op_t = op_t;
     this -> crossed = false;
+    this -> result = 0;
 
-    // op1 > op2 (for substraction and division)
-    if( op2 > op1 )
+    while(  this -> result == 0 || this -> result > 99 )
     {
-        int tmp = op1;
-        op1 = op2;
-        op2 = tmp;
-    }
+        this -> op1 = rand() % 99 + 1;
+        this -> op2 = rand() % 99 + 1;
 
-    switch(op_t)
-    {
-        case ADD: this -> result = op1 + op2;
-                  break;
-        case SUB: this -> result = op1 - op2;
-                  break;
-        case MUL: this -> result = op1 * op2;
-                  break;
-        case DIV: this -> result = op1 / op2;
-                  break;
+        // op1 > op2 (for substraction and division)
+        if( op2 > op1 )
+        {
+            int tmp = op1;
+            op1 = op2;
+            op2 = tmp;
+        }
+
+        switch(op_t)
+        {
+            case ADD: this -> result = op1 + op2;
+                      break;
+            case SUB: this -> result = op1 - op2;
+                      break;
+            case MUL: this -> result = op1 * op2;
+                      break;
+            case DIV: this -> result = op1 / op2;
+                      break;
+        }
     }
 }
 
