@@ -11,7 +11,7 @@ vector<operation_t> POOL;
 
 
 /*
- * Helper fucntions
+ * Helper functions
  */
 
 /* Returns the first digit of N */
@@ -19,6 +19,12 @@ int fd(int n);
 
 /* Returns the last digit of N */
 int ld(int n);
+
+/*
+ * Returns 0 if N and M does not intersect each other
+ * Returns 1 if N last digit intersects M first digit
+ */
+int cross(int n, int m);
 
 
 operation_t::operation_t(char op_t)
@@ -90,62 +96,47 @@ void fill_pool(char op_t, int op_n)
 
 int get_operations(op_seq_pool& seq_pool, char op_t, int op_n, int cross_n)
 {
-    // Create the operations pool
+    // Create set of operations
     fill_pool(op_t, op_n);
 
     int cross_counter = 0;
     op_seq sequence;
 
 
-    for( int i=0; i<POOL.size()-1; i++ )
+    int current_chk_operation;
+    for( int i=0; i<POOL.size(); i++ )
     {
-        for( int j=i+1; j<POOL.size()-j; j++ )
+        current_chk_operation = i;
+
+        // Skip already crossed operations
+        if( POOL[i].crossed == true ) { continue; }
+
+
+        for( int j=0; j<POOL.size(); j++ )
         {
-            // Both operations are cross free
-            if( POOL[i].crossed == false && POOL[j].crossed == false )
+            // Skip self operation and already crossed operations
+            if( current_chk_operation == j ){ continue; }
+            if( POOL[j].crossed == true ) { continue; }
+
+            // Check for intersections
+            if( cross(POOL[current_chk_operation].result, POOL[j].result) )
             {
-                /* Cross testing */
-                // One way
-                if( ld(POOL[i].result) == fd(POOL[j].result) )
-                {
-                    // CROSS_N maximum
-                    if( cross_counter < cross_n )
-                    {
-                        sequence.push_back(POOL[i]);
-                        sequence.push_back(POOL[j]);
-                        POOL[i].crossed = true;
-                        POOL[j].crossed = true;
-                        cross_counter++;
-                    }
-                }
-                // Or another (I gonna get you... :)
-                else if( fd(POOL[i].result) == ld(POOL[j].result) )
-                {
-                    // CROSS_N maximum
-                    if( cross_counter < cross_n )
-                    {
-                        sequence.push_back(POOL[j]);
-                        sequence.push_back(POOL[i]);
-                        POOL[i].crossed = true;
-                        POOL[j].crossed = true;
-                        cross_counter++;
-                    }
-                }
+                sequence.push_back(POOL[current_chk_operation]);
+                POOL[current_chk_operation].crossed = true;
+                current_chk_operation = j;
+                j = 0;
+                cross_counter++;
             }
         }
 
-        // No intersections possible for this element
-        // create a sequence with a single operation
-        if( sequence.size() == 0 && POOL[i].crossed == false)
-        {
-            sequence.push_back(POOL[i]);
-        }
+        // Push remainder operation
+        sequence.push_back(POOL[current_chk_operation]);
+        POOL[current_chk_operation].crossed = true;
 
-        // Append and clear current sequence
-        if( sequence.size() != 0 )
-        {
-            seq_pool.push_back(sequence);
-        }
+        // Push sequence to sequence pool
+        seq_pool.push_back(sequence);
+
+        // Reset sequence for next iterations
         sequence.clear();
     }
 
@@ -167,4 +158,20 @@ int fd(int n)
 int ld(int n)
 {
     return n % 10;
+}
+
+
+
+/*
+ * Returns 0 if N and M does not intersect each other
+ * Returns 1 if N last digit intersects M first digit
+ */
+int cross(int n, int m)
+{
+    // 1 Digit numbers cannot cross
+    if( n/10 == 0 || m/10 == 0 ){ return 0; }
+
+    if( ld(n) == fd(m) ){ return 1; }
+
+    return 0;
 }

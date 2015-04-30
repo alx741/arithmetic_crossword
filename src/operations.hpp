@@ -48,6 +48,7 @@ typedef std::vector<operation_t> op_seq;
 typedef std::vector<op_seq> op_seq_pool;
 
 
+
 /*
  * Fill SEQ_POOL with OP_N operation of type OP_T and up to
  * CROSS_N intersections
