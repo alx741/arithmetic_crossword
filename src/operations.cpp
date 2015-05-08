@@ -1,7 +1,7 @@
+#include "operations.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include "operations.hpp"
 
 using namespace std;
 
@@ -25,6 +25,7 @@ int ld(int n);
  * Returns 1 if N last digit intersects M first digit
  */
 int cross(int n, int m);
+
 
 
 operation_t::operation_t(char op_t)

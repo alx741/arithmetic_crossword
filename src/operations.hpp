@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#ifndef _OPERATIONS_HPP_
-#define _OPERATIONS_HPP_
+#ifndef OPERATIONS_HPP
+#define OPERATIONS_HPP
 
 
 /*
@@ -58,4 +58,4 @@ typedef std::vector<op_seq> op_seq_pool;
 int get_operations(op_seq_pool& seq_pool, char op_t, int op_n, int cross_n);
 
 
-#endif // _OPERATIONS_HPP_
+#endif // OPERATIONS_HPP
