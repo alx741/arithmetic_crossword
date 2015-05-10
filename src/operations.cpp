@@ -11,16 +11,6 @@ vector<operation_t> POOL;
 
 
 /*
- * Helper functions
- */
-
-/* Returns the first digit of N */
-int fd(int n);
-
-/* Returns the last digit of N */
-int ld(int n);
-
-/*
  * Returns 0 if N and M does not intersect each other
  * Returns 1 if N last digit intersects M first digit
  */

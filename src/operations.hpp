@@ -58,4 +58,12 @@ typedef std::vector<op_seq> op_seq_pool;
 int get_operations(op_seq_pool& seq_pool, char op_t, int op_n, int cross_n);
 
 
+
+/* Returns the first digit of N */
+int fd(int n);
+
+/* Returns the last digit of N */
+int ld(int n);
+
+
 #endif // OPERATIONS_HPP
