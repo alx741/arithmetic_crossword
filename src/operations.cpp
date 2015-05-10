@@ -24,7 +24,7 @@ operation_t::operation_t(char op_t)
     this -> crossed = false;
     this -> result = 0;
 
-    while(  this -> result == 0 || this -> result > 99 )
+    while(  this -> result == 0 || this -> result > 99 || this -> result < 10)
     {
         this -> op1 = rand() % 99 + 1;
         this -> op2 = rand() % 99 + 1;
