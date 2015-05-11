@@ -1,12 +1,16 @@
 #include <iostream>
 #include "operations.hpp"
+#include "game.hpp"
 
 using namespace std;
 
 
 int main()
 {
-    /* gen_operations(DIV | ADD | MUL | SUB, 5); */
+    /*
+                           TEST 1 ( get_operations )
+
+
     op_seq_pool seq_pool;
 
     cout << "Cruzes generados: ";
@@ -14,13 +18,34 @@ int main()
 
     for( int i=0; i<seq_pool.size(); i++ )
     {
-        cout << "Sequencia: " << i << endl;
+        cout << "\nSequencia: " << i << endl;
         for( int j=0; j<seq_pool[i].size(); j++ )
         {
-            /* cout << "\t op result: " << seq_pool[i][j].result << endl; */
-            cout << "\t " << seq_pool[i][j].op1 << " [" << int(seq_pool[i][j].op_t) << "] ";
+            cout << "\t " << seq_pool[i][j].op1;
+
+            switch(seq_pool[i][j].op_t)
+            {
+                case ADD: cout << " + ";
+                          break;
+                case SUB: cout << " - ";
+                          break;
+                case MUL: cout << " * ";
+                          break;
+                case DIV: cout << " / ";
+                          break;
+            }
+
             cout << seq_pool[i][j].op2 << " = " << seq_pool[i][j].result << endl;
         }
     }
+    */
+
+    if( create_game(10, 10, 50, DIV | ADD | MUL | SUB) )
+    {
+        cout << "[ ! ] Creado con exito" << endl << endl;
+    }else{ cout << "FALLO la creacion" << endl << endl; }
+
+
+
 
 }
