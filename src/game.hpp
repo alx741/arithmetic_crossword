@@ -7,7 +7,6 @@
         - A single field can contain digits that intersect
             in the results of two operations
         - Blank fields contains a -1 (which is invalid operation result)
-        - Only already reveled values are in the matrix
         - DO NOT modify the global variable GAME_MATRIX
 
 
@@ -23,13 +22,22 @@
  */
 
 
-
-#include "operations.hpp"
 #include <vector>
 #include <string>
 
 #ifndef GAME_HPP
 #define GAME_HPP
+
+
+/*
+ * Operations types (OP_T)
+ *
+ * These must be logical ORed
+ */
+#define ADD 0x01
+#define SUB 0x02
+#define MUL 0x04
+#define DIV 0x08
 
 
 /*
@@ -40,11 +48,15 @@ typedef enum {UP, DOWN, RIGHT, LEFT} direction;
 
 /*
  * Query
+ *
+ * The OPERATION string is in the form:
+ *      [operator1] [operation symbol] [operator2]
  */
-struct query
+struct query_t
 {
     int x;
     int y;
+    int result;
     direction dir;
     std::string operation;
 };
@@ -52,12 +64,8 @@ struct query
 
 /*
  * Game Queries
- *
- * String structure:
- *
- *       [X-axis_symbol] [Y-axis_symbol] : [operation] = [result]
  */
-extern std::vector<query> GAME_QUERIES;
+extern std::vector<query_t> GAME_QUERIES;
 
 
 /*
@@ -65,29 +73,56 @@ extern std::vector<query> GAME_QUERIES;
  *
  * A valid game solution is a matrix equal to GAME_MATRIX
  */
-extern std::vector<std::vector<int>> GAME_MATRIX;
+extern std::vector< std::vector<int> > GAME_MATRIX;
 
 
 /*
- * Create GAME_MATRIX of NxM with OP_N operations and fill GAME_QUERIES
- * [!] Invoking this function will clean up any previous game set
+ * Describes and identify a disk stored gameset
+ *
+ * The GAME_DESCRIPTION string is in the form:
+ *      - Board: NxM
+ *      - Number of operations: #
+ *      - Operations: ADD | SUB | MUL | DIV
+ */
+struct gameset_desc_t
+{
+    std::string gameset_id;
+    std::string game_description;
+};
+
+
+
+/*
+ * Create new gameset of NxM with OP_N operations
+ * Use a combination of the OP_T logical ORed operations
+ * Store the created gameset on disk
  *
  * Returns 1 if success
  *
  * Returns zero if the number of operations requested cannot be
- * allocated in NxM
+ * allocated in NxM (None gameset is created)
  */
-int new_game(int n, int m, int op_n);
+int create_game(int n, int m, int op_n, char op_t);
+
 
 
 /*
- * Test a RESULT for the QUERY_INDEX query
+ * Fills up GAME_DESC_VECT vector with all the disk stored gamesets
  *
- * Returns 1 if success and GAME_MATRIX is updated
- *
- * Returns zero otherwise (should query the user again)
+ * Returns 0 if none gameset exists
  */
-int try(int result, int query_index);
+int get_gamesets(std::vector<game_desc_t>& game_desc_vect);
+
+
+
+/*
+ * Loads GAME_MATRIX and GAME_QUERIES of GAMESET_ID
+ * [!] Invoking this function will clean up any previous game set
+ *
+ * Returns 0 if none GAMESET_ID match exists
+ */
+int load_game(string gameset_id);
+
 
 
 #endif // GAME_HPP
