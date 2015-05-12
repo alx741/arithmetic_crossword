@@ -24,6 +24,7 @@
 
 */
 
+#include "game.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -34,14 +35,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
-#include "game.hpp"
 
 
 #ifndef STORE_HPP
 #define STORE_HPP
 
 
-#define HOME_DIR "crossword"
+#define HOME_DIR "crossword_d"
 #define GAMESET_DIR "gamesets"
 
 

@@ -1,4 +1,5 @@
 #include "store.hpp"
+#include "game.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,7 +10,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
-#include "game.hpp"
 
 
 using namespace std;
@@ -207,7 +207,7 @@ void verify_dirtree()
 
     if (stat(HOME_DIR, &st) == -1) {
             mkdir(HOME_DIR, 0777);
-            mkdir("crossword/gamesets", 0777);
+            mkdir("crossword_d/gamesets", 0777);
     }
 }
 
@@ -234,7 +234,7 @@ void store_gameset(const std::vector< std::vector<int> >& game_matrix,
     }
     s[len] = 0;
 
-    std::string dir("crossword/gamesets/");
+    std::string dir("crossword_d/gamesets/");
     dir = dir + s;
 
     mkdir(dir.c_str(), 0777);
@@ -270,7 +270,7 @@ void recover_gameset(std::vector< std::vector<int> >& game_matrix,
 {
     verify_dirtree();
 
-    std::string dir("crossword/gamesets/");
+    std::string dir("crossword_d/gamesets/");
     dir = dir + gameset_id;
 
 
@@ -297,7 +297,7 @@ int get_game_sets(std::vector<gameset_desc_t>& gameset_desc_vect)
 {
     verify_dirtree();
 
-    std::string sets_dir("crossword/gamesets/");
+    std::string sets_dir("crossword_d/gamesets/");
     std::string this_dir;
     std::string gameset_id;
     std::string metadata;
@@ -305,7 +305,7 @@ int get_game_sets(std::vector<gameset_desc_t>& gameset_desc_vect)
 
     DIR* d;
     struct dirent *dir;
-    d = opendir("crossword/gamesets/");
+    d = opendir("crossword_d/gamesets/");
     if (d)
     {
         while ((dir = readdir(d)) != NULL)
@@ -314,7 +314,6 @@ int get_game_sets(std::vector<gameset_desc_t>& gameset_desc_vect)
             gameset_id.insert(0, dir->d_name);
 
             if( gameset_id == "." || gameset_id == ".." ){ continue; }
-            cout << gameset_id << endl;
 
 
             /* Game set direcotory */
