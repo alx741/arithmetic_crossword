@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "operations.hpp"
+#include "store.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <string>
@@ -65,55 +66,6 @@ int allocate_opseq(const op_seq& seq, vector< vector<int> >& matrix, vector<quer
 void gen_querystring(query_t& query, const operation_t operation);
 
 
-
-/*
- * Create new gameset of NxM with OP_N operations
- * Use a combination of the OP_T logical ORed operations
- * Store the created gameset on disk
- *
- * Returns 1 if success
- *
- * Returns zero if the number of operations requested cannot be
- * allocated in NxM (None gameset is created)
- */
-int create_game(int n, int m, int op_n, char op_t)
-{
-    vector< vector<int> >   MATRIX;
-    vector<query_t>         QUERIES;
-    op_seq_pool             seq_pool;
-
-
-    /* Generate operations */
-    get_operations(seq_pool, op_t, op_n, min(n, m));
-
-
-    /* Init MATRIX */
-    vector<int> null_vector;
-    for(int i=0; i<n; i++)
-    {
-        for(int j=0; j<m; j++)
-        {
-            // -1 is null value (invalid operation result)
-            null_vector.push_back(-1);
-        }
-        MATRIX.push_back(null_vector);
-    }
-
-
-    /* Allocate every operation sequence in the sequence pool */
-    for(int i=0; i<seq_pool.size(); i++)
-    {
-        if( ! allocate_opseq(seq_pool[i], MATRIX, QUERIES) )
-        {
-            // Allocation failed
-            return 0;
-        }
-    }
-
-    /* Save the game to disk */
-
-    return 1;
-}
 
 
 
@@ -319,4 +271,86 @@ int allocate_opseq(const op_seq& seq, vector< vector<int> >& matrix, vector<quer
 
     // No possible allocation path
     return 0;
+}
+
+
+
+/*
+ * Create new gameset of NxM with OP_N operations
+ * Use a combination of the OP_T logical ORed operations
+ * Store the created gameset on disk
+ *
+ * Returns 1 if success
+ *
+ * Returns zero if the number of operations requested cannot be
+ * allocated in NxM (None gameset is created)
+ */
+int create_game(int n, int m, int op_n, char op_t)
+{
+    vector< vector<int> >   MATRIX;
+    vector<query_t>         QUERIES;
+    op_seq_pool             seq_pool;
+
+
+    /* Generate operations */
+    get_operations(seq_pool, op_t, op_n, min(n, m));
+
+
+    /* Init MATRIX */
+    vector<int> null_vector;
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<m; j++)
+        {
+            // -1 is null value (invalid operation result)
+            null_vector.push_back(-1);
+        }
+        MATRIX.push_back(null_vector);
+    }
+
+
+    /* Allocate every operation sequence in the sequence pool */
+    for(int i=0; i<seq_pool.size(); i++)
+    {
+        if( ! allocate_opseq(seq_pool[i], MATRIX, QUERIES) )
+        {
+            // Allocation failed
+            return 0;
+        }
+    }
+
+    /* Save the game to disk */
+    store_gameset(MATRIX, QUERIES, n, m, op_n, op_t);
+
+    return 1;
+}
+
+
+
+
+/*
+ * Fills up GAME_DESC_VECT vector with all the disk stored gamesets
+ *
+ * Returns 0 if none gameset exists
+ */
+int get_gamesets(std::vector<gameset_desc_t>& gameset_desc_vect)
+{
+    return get_game_sets(gameset_desc_vect);
+}
+
+
+
+/*
+ * Loads GAME_MATRIX and GAME_QUERIES of GAMESET_ID
+ * [!] Invoking this function will clean up any previous game set
+ *
+ * Returns 0 if none GAMESET_ID match exists
+ */
+int load_game(std::string gameset_id)
+{
+    GAME_MATRIX.clear();
+    GAME_QUERIES.clear();
+
+    recover_gameset(GAME_MATRIX, GAME_QUERIES, gameset_id);
+    return 1;
 }

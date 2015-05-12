@@ -111,7 +111,7 @@ int create_game(int n, int m, int op_n, char op_t);
  *
  * Returns 0 if none gameset exists
  */
-int get_gamesets(std::vector<game_desc_t>& game_desc_vect);
+int get_gamesets(std::vector<gameset_desc_t>& gameset_desc_vect);
 
 
 
@@ -121,7 +121,7 @@ int get_gamesets(std::vector<game_desc_t>& game_desc_vect);
  *
  * Returns 0 if none GAMESET_ID match exists
  */
-int load_game(string gameset_id);
+int load_game(std::string gameset_id);
 
 
 
